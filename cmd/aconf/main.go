@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/ogiogidayo/aconf/handler"
 	"os"
+
+	"github.com/ogiogidayo/aconf/handler"
 )
 
 func main() {

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+
 	"github.com/ogiogidayo/aconf/config"
 )
 

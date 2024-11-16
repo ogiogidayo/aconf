@@ -2,9 +2,10 @@ package handler
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/ogiogidayo/aconf/config"
 	"github.com/ogiogidayo/aconf/usecase"
-	"os"
 )
 
 func HandleCommand(command string, args []string) error {
