@@ -1,4 +1,5 @@
 # aconf
+![workflow](https://github.com/ogiogidayo/aconf/actions/workflows/CI.yaml/badge.svg)
 
 ## 使用方法
 - AWSアカウントの切り替え
