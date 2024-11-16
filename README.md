@@ -1,5 +1,18 @@
 # aconf
+![Version](https://img.shields.io/github/v/tag/ogiogidayo/aconf?label=version&sort=semver)
+![License](https://img.shields.io/github/license/ogiogidayo/aconf)
 ![workflow](https://github.com/ogiogidayo/aconf/actions/workflows/CI.yaml/badge.svg)
+
+## Outline
+- AWSアカウントをCLI上でMFA認証するときに以下のコードを簡単なコマンドで実行できるようにするツール
+```shell
+OUTPUT=$(aws sts get-session-token \
+  --serial-number <arm> \
+  --profile <profile> --token-code xxxxxx)
+export AWS_ACCESS_KEY_ID=$(echo $OUTPUT | jq -r .Credentials.AccessKeyId)
+export AWS_SECRET_ACCESS_KEY=$(echo $OUTPUT | jq -r .Credentials.SecretAccessKey)
+export AWS_SESSION_TOKEN=$(echo $OUTPUT | jq -r .Credentials.SessionToken)
+```
 
 ## 使用方法
 - AWSアカウントの切り替え
