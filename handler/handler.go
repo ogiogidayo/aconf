@@ -1,9 +1,10 @@
-package cli
+package handler
 
 import (
-	"aconf/config"
-	"aconf/usecase"
-	"errors"
+	"fmt"
+	"github.com/ogiogidayo/aconf/config"
+	"github.com/ogiogidayo/aconf/usecase"
+	"os"
 )
 
 func HandleCommand(command string, args []string) error {
@@ -15,20 +16,28 @@ func HandleCommand(command string, args []string) error {
 	switch command {
 	case "switch":
 		if len(args) != 1 {
-			return errors.New("Usage: aconf switch <profile>")
+			fmt.Println("Usage: aconf switch <profile>")
+			os.Exit(1)
 		}
-		return usecase.SwitchProfile(cfg, args[0])
+		if err := usecase.SwitchProfile(cfg, args[0]); err != nil {
+			return fmt.Errorf("error in usecase: %v", err)
+		}
 
 	case "add":
 		if len(args) != 2 {
-			return errors.New("Usage: aconf add <profile> <MFA ARN>")
+			fmt.Println("Usage: aconf add <profile> <MFA ARN>")
+			os.Exit(1)
 		}
-		return config.AddProfile(cfg, args[0], args[1])
+		if err := config.AddProfile(cfg, args[0], args[1]); err != nil {
+			return fmt.Errorf("error in usecase: %v", err)
+		}
 
 	default:
 		if len(args) != 1 {
-			return errors.New("Usage: aconf <profile> <MFA code>")
+			fmt.Println("Usage: aconf <profile> <MFA code>")
+			os.Exit(1)
 		}
-		return usecase.AuthenticateWithMFA(cfg, command, args[0])
+		usecase.AuthenticateWithMFA(cfg, command, args[0])
 	}
+	return nil
 }
