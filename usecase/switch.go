@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"aconf/config"
-	"os"
+	"fmt"
+	"github.com/ogiogidayo/aconf/config"
 )
 
 func SwitchProfile(cfg *config.Config, profile string) error {
@@ -10,5 +10,6 @@ func SwitchProfile(cfg *config.Config, profile string) error {
 	//	return errors.New("Profile not found: " + profile)
 	//	}
 
-	return os.Setenv("AWS_DEFAULT_PROFILE", profile)
+	fmt.Printf("export AWS_DEFAULT_PROFILE=%s\n", profile)
+	return nil
 }
