@@ -38,13 +38,8 @@ go build -o aconf
 ```shell
 sudo mv ./aconf /usr/local/bin/
 ```
-3. シェルに権限付与&移動
-プロジェクトルートで以下を行う.
-```shell
-sudo mv aconf.sh /usr/local/bin/aconf
-chmod +x /usr/local/bin/aconf
-```
-4. シェルエイリアスを使った実行
+
+3. シェルエイリアスを使った実行
 `.zshrc`や`.bashrc`に以下を追加する
 ```bash
 aconf() {
