@@ -3,47 +3,43 @@ package usecase
 import (
 	"encoding/json"
 	"fmt"
-	"os"
-
-	"aconf/config"
-	"aconf/utils"
+	"github.com/ogiogidayo/aconf/config"
+	"github.com/ogiogidayo/aconf/utils"
 )
 
-type SessionCredentials struct {
+type Credentials struct {
 	AccessKeyId     string `json:"AccessKeyId"`
 	SecretAccessKey string `json:"SecretAccessKey"`
 	SessionToken    string `json:"SessionToken"`
 }
 
-func AuthenticateWithMFA(cfg *config.Config, profile, mfaCode string) error {
+func AuthenticateWithMFA(cfg *config.Config, profile, mfaCode string) {
 	mfaArn, exists := cfg.Profiles[profile]
 	if !exists {
-		return fmt.Errorf("Profile not found: %s", profile)
+		fmt.Printf("Profile not found: %s\n", profile)
+		return
 	}
 
-	cmd := []string{
+	output, err := utils.RunShellCommand([]string{
 		"aws", "sts", "get-session-token",
 		"--serial-number", mfaArn,
 		"--profile", profile,
 		"--token-code", mfaCode,
-	}
-
-	output, err := utils.RunShellCommand(cmd)
+	})
 	if err != nil {
-		return err
+		fmt.Printf("Error executing AWS CLI: %s\n", err)
+		return
 	}
 
 	var result struct {
-		Credentials SessionCredentials `json:"Credentials"`
+		Credentials Credentials `json:"Credentials"`
 	}
 	if err := json.Unmarshal([]byte(output), &result); err != nil {
-		return err
+		fmt.Printf("Error parsing AWS CLI output: %s\n", err)
+		return
 	}
 
-	os.Setenv("AWS_ACCESS_KEY_ID", result.Credentials.AccessKeyId)
-	os.Setenv("AWS_SECRET_ACCESS_KEY", result.Credentials.SecretAccessKey)
-	os.Setenv("AWS_SESSION_TOKEN", result.Credentials.SessionToken)
-
-	fmt.Println("Successfully authenticated with MFA.")
-	return nil
+	fmt.Printf("export AWS_ACCESS_KEY_ID=%s\n", result.Credentials.AccessKeyId)
+	fmt.Printf("export AWS_SECRET_ACCESS_KEY=%s\n", result.Credentials.SecretAccessKey)
+	fmt.Printf("export AWS_SESSION_TOKEN=%s\n", result.Credentials.SessionToken)
 }
