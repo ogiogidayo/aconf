@@ -54,5 +54,5 @@ aconf() {
 ```
 保存後, 再読み込み
 ```shell
-source ~/.bashrc
+source ~/.zshrc
 ```
