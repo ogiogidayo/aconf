@@ -56,3 +56,6 @@ aconf() {
 ```shell
 source ~/.zshrc
 ```
+
+> [!WARNING]
+> JetBrains社のBeta版コンソールでは正常に動作しない可能性がある
